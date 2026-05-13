@@ -1,0 +1,47 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.minimax.io/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "sk-cp-WZa1gawpZTbga5xWfHOza0EExGKK7EkwNEnBfBl3W0kOiv2Q1Sya-fntOYGqO5OeqXSfSgAWJREGHMqL-heIadB1JE6Xm4BmvYxxYu9cDR8RSu36Z_VpKcQ"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm i:*)",
+      "Bash(npm run build)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(del:*)",
+      "Bash(ls:*)",
+      "Bash(dir:*)",
+      "Bash(pnpm build)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout:*)",
+      "Bash(ping:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(curl:*)",
+      "Bash(git checkout:*)",
+      "Bash(python -m json.tool)",
+      "Bash(if exist \".next\" rmdir /s /q .next)",
+      "Bash(test -f c:UsersUsuariopinneacle.env.example)",
+      "Bash(gh auth *)",
+      "Bash(powershell -Command \"Invoke-RestMethod -Uri 'https://forzasport-cali.vercel.app/api/revalidate' -Method POST -ContentType 'application/json' -Body '{\\\\\"type\\\\\":\\\\\"product\\\\\",\\\\\"slug\\\\\":\\\\\"nike-air-max-1-phantaci-grand-piano\\\\\"}'\")",
+      "Bash(gh api *)",
+      "Bash(ssh-keygen -t ed25519 -C \"bastianframe@gmail.com\" -f ~/.ssh/id_ed25519_shark -N \"\")",
+      "Read(//c/Users/basti/.ssh/**)",
+      "Bash(ssh -T git@github.com -i ~/.ssh/id_ed25519_shark)",
+      "Bash(cat > *)",
+      "Bash(Remove-Item -Recurse -Force .git)",
+      "Bash(cd \"d:/12.Freelance/Nuevo sitio web de cafe/salvame\" && rm -rf .git && echo \"Carpeta .git eliminada\")",
+      "Bash(git remote *)",
+      "Bash(ssh-keygen -t ed25519 -C \"cristito282828-source\" -f ~/.ssh/id_ed25519_cristito -N \"\")",
+      "Bash(ssh -T git@github.com-cristito)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\basti\\.ssh",
+      "d:\\12.Freelance\\Nuevo sitio web de cafe\\salvame\\.git"
+    ]
+  }
+}
