@@ -297,7 +297,7 @@ export function WooNavbarClient({ categories, SITE_NAME }: WooNavbarClientProps)
               prefetch={true}
               className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
             >
-              <div className="flex h-16 w-16 flex-none items-center justify-center rounded-lg border border-gray-700 bg-gray-800 overflow-hidden">
+              <div className="flex h-16 w-16 flex-none items-center justify-center overflow-hidden">
                 <img
                   src="/logo%20mania.png"
                   alt="Store Desing"
