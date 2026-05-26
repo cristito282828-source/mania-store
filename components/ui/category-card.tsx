@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Category {
   id: string;
@@ -18,10 +19,12 @@ export function CategoryCard({ category }: { category: Category }) {
     >
       <div className="relative aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
         {category.image ? (
-          <img
+          <Image
             src={category.image}
             alt={category.name}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            fill
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            priority={false}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">

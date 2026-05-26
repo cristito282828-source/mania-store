@@ -1,32 +1,31 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
-interface Product {
+interface Category {
   id: string;
   name: string;
   slug: string;
-  price: string;
   image: string;
-  category: string;
   description: string;
 }
 
-export function ProductCard({ product }: { product: Product }) {
-  console.log('🎴 ProductCard recibió:', product);
-
+export function CategoryCard({ category }: { category: Category }) {
   return (
     <Link
-      href={`/product/${product.slug}`}
+      href={`/category/${category.slug}`}
       className="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
     >
       {/* Imagen */}
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-        {product.image ? (
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+        {category.image ? (
+          <Image
+            src={category.image}
+            alt={category.name}
+            fill
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            priority={false}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
@@ -38,10 +37,10 @@ export function ProductCard({ product }: { product: Product }) {
       {/* Info */}
       <div className="p-4">
         <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-          {product.name || 'Sin nombre'}
+          {category.name || 'Sin nombre'}
         </h3>
-        <p className="text-lg text-gray-700 font-medium">
-          {product.price || 'Sin precio'}
+        <p className="text-sm text-gray-600 line-clamp-2">
+          {category.description || 'Sin descripción'}
         </p>
       </div>
     </Link>

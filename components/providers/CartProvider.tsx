@@ -38,6 +38,7 @@ interface CartContextType {
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   addToCart: (productId: string, quantity?: number, productData?: any) => Promise<boolean>;
   updateQuantity: (key: string, quantity: number) => void;
   removeItem: (key: string) => void;
@@ -64,7 +65,7 @@ const parsePrice = (priceStr: string): number => {
 
   if (hasComma && hasDot) {
     const parts = cleaned.split('.');
-    if (parts.length === 2 && parts[1].length <= 2) {
+    if (parts.length === 2 && (parts[1]?.length ?? 0) <= 2) {
       cleaned = cleaned.replace(/,/g, '').replace(/\.\d+$/, '');
     } else {
       cleaned = cleaned.replace(/,/g, '').replace(/\./g, '');
@@ -78,7 +79,7 @@ const parsePrice = (priceStr: string): number => {
     }
   } else if (hasComma) {
     const parts = cleaned.split(',');
-    if (parts.length === 2 && parts[1].length <= 2) {
+    if (parts.length === 2 && (parts[1]?.length ?? 0) <= 2) {
       cleaned = parts[0] || '0';
     } else {
       cleaned = cleaned.replace(/,/g, '');
@@ -213,7 +214,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [openCart]);
 
   // Update quantity of an existing item
   const updateQuantity = useCallback((key: string, quantity: number) => {
@@ -234,7 +235,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const totals = calculateCartTotals(updatedNodes);
       return { ...prevCart, contents: { nodes: updatedNodes }, ...totals };
     });
-  }, [cart]);
+  }, [cart, removeItem]);
 
   // Remove an item entirely
   const removeItem = useCallback((key: string) => {
