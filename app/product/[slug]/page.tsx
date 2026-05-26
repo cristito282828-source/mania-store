@@ -1,8 +1,10 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { WooNavbar } from '@/components/layout/navbar/woo-navbar';
 import FooterCustom from '@/components/custom/FooterCustom';
 import { ProductDescriptionWoo } from '@/components/product/ProductDescriptionWoo';
 import { ProductViewTracker } from '@/components/product/ProductViewTracker';
+import { WooProduct, WooProductOperation } from '@/lib/woocommerce/types';
 
 /**
  * PÁGINA INDIVIDUAL DE PRODUCTO - WooCommerce
@@ -22,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { woocommerceFetch } = await import('@/lib/woocommerce');
     const { getProductQuery } = await import('@/lib/woocommerce/queries/product');
 
-    const res = await woocommerceFetch<any>({
+    const res = await woocommerceFetch<WooProductOperation>({
       query: getProductQuery,
       variables: { slug }
     });
@@ -51,18 +53,13 @@ async function getProduct(slug: string) {
     const { woocommerceFetch } = await import('@/lib/woocommerce');
     const { getProductQuery } = await import('@/lib/woocommerce/queries/product');
 
-    const res = await woocommerceFetch<any>({
+    const res = await woocommerceFetch<WooProductOperation>({
       query: getProductQuery,
       variables: { slug }
     });
 
-    // Log temporal para depuración de la respuesta cruda
-    // eslint-disable-next-line no-console
-    console.log('RESPUESTA CRUDA DEL FETCH:', res.body.data);
-
     return res.body.data.product;
-  } catch (error) {
-    console.error('Error fetching product:', error);
+  } catch {
     return null;
   }
 }
@@ -70,15 +67,6 @@ async function getProduct(slug: string) {
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = await getProduct(slug);
-  // Log temporal para depuración de variaciones
-  // eslint-disable-next-line no-console
-  console.log('PRODUCTO INDIVIDUAL:', product);
-  // eslint-disable-next-line no-console
-  console.log('VARIACIONES:', product?.variations?.nodes);
-  // eslint-disable-next-line no-console
-  console.log('TYPENAME:', product?.__typename);
-  // eslint-disable-next-line no-console
-  console.log('ATTRIBUTES:', product?.attributes?.nodes);
 
   if (!product) {
     return (
@@ -93,8 +81,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     );
   }
 
-  const price = product.price || 'Precio no disponible';
-  const image = product.image?.sourceUrl || product.image?.url || '/placeholder.jpg';
+  const image = product.image?.sourceUrl || '/placeholder.jpg';
   const galleryImages = product.galleryImages?.nodes || [];
 
   // Preparar datos para el tracker de productos vistos
@@ -103,17 +90,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     slug: product.slug,
     name: product.name,
     price: product.price,
-    image: product.image?.sourceUrl || product.image?.url
+    image: product.image?.sourceUrl
   };
-
-  // Función simple para limpiar HTML - solo extraer texto
-  const stripHtml = (html: string) => {
-    if (!html) return '';
-    return html.replace(/<[^>]*>/g, '').trim();
-  };
-
-  const shortDescription = product.shortDescription ? stripHtml(product.shortDescription) : '';
-  const description = product.description ? stripHtml(product.description) : '';
 
   return (
     <>
@@ -138,24 +116,28 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="lg:col-span-3">
             <div className="space-y-4">
               <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
-                <img
+                <Image
                   src={image}
                   alt={product.name || 'Producto'}
-                  className="w-full h-full object-cover object-center"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 60vw"
                 />
               </div>
 
               {galleryImages.length > 0 && (
                 <div className="grid grid-cols-4 gap-4">
-                  {galleryImages.map((img: any, index: number) => (
+                  {galleryImages.map((img, index) => (
                     <div
                       key={img.sourceUrl || index}
                       className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 cursor-pointer hover:opacity-75"
                     >
-                      <img
+                      <Image
                         src={img.sourceUrl}
                         alt={`${product.name || 'Producto'} - ${index + 1}`}
-                        className="w-full h-full object-cover object-center"
+                        fill
+                        className="object-cover object-center"
+                        sizes="25vw"
                       />
                     </div>
                   ))}

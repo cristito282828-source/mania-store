@@ -1,28 +1,18 @@
-import { Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 /**
- * NUEVA HOME PAGE - WooCommerce
- * Versión limpia sin dependencias de Shopify
+ * HOME PAGE - WooCommerce
  */
 
-// ISR: Revalidar automáticamente cada 60 segundos
 export const revalidate = 60;
 
-// Conexión WooCommerce
-import {
-  getProducts as getWooProducts,
-  getCollections as getWooCollections
-} from '@/lib/woocommerce';
-
-// Componentes simples
+import { getCollections as getWooCollections } from '@/lib/woocommerce';
 import { ProductCard } from '@/components/ui/product-card';
-import { CategoryCard } from '@/components/ui/category-card';
 import { WooNavbar } from '@/components/layout/navbar/woo-navbar';
 import FooterCustom from '@/components/custom/FooterCustom';
 import { BannerCarousel } from '@/components/custom/BannerCarousel';
 import { CategoryCarousel } from '@/components/custom/CategoryCarousel';
+import { WooProduct, WooProductsOperation } from '@/lib/woocommerce/types';
 
 export const metadata = {
   title: 'Store Desing - Tu Tienda Online de Deportes y Fitness',
@@ -30,37 +20,32 @@ export const metadata = {
   keywords: 'deportes, fitness, accesorios deportivos, tienda online, Store Desing',
 };
 
-async function getFeaturedProducts() {
-  try {
-    console.log('📦 Fetching productos...');
+interface AdaptedProduct {
+  id: string;
+  name: string;
+  slug: string;
+  price: string;
+  image: string;
+  category: string;
+  description: string;
+}
 
-    // Importar directamente los tipos y query necesarios
+async function getFeaturedProducts(): Promise<AdaptedProduct[]> {
+  try {
     const { woocommerceFetch } = await import('@/lib/woocommerce');
     const { getProductsQuery } = await import('@/lib/woocommerce/queries/product');
 
-    // Hacer fetch directo a WooCommerce sin reshape
-    const res = await woocommerceFetch<any>({
+    const res = await woocommerceFetch<WooProductsOperation>({
       query: getProductsQuery,
       variables: {}
     });
 
     const products = res.body.data.products?.nodes || [];
 
-    console.log('✅ Productos OBTENIDOS DIRECTAMENTE DE WOOCOMMERCE:');
-    console.table(products.map((p: any) => ({
-      id: p.id,
-      name: p.name,
-      slug: p.slug,
-      price: p.price,
-      hasImage: !!p.image
-    })));
-
     if (!products || products.length === 0) {
-      console.log('⚠️ No hay productos');
       return [];
     }
 
-    // Función para limpiar precios de HTML entities
     const cleanPrice = (price: string) => {
       if (!price) return price;
       return String(price)
@@ -72,32 +57,31 @@ async function getFeaturedProducts() {
         .trim();
     };
 
-    // Adaptar a formato simple
-    const adapted = products.slice(0, 8).map((product: any) => {
-      const adaptedProduct = {
+    return products.slice(0, 8).map((product) => {
+      return {
         id: product.id,
         name: product.name,
         slug: product.slug,
-        price: cleanPrice(product.price) || 'Precio no disponible',
-        image: product.image?.sourceUrl || product.image?.url || '/placeholder.jpg',
+        price: cleanPrice(product.price || '') || 'Precio no disponible',
+        image: product.image?.sourceUrl || '/placeholder.jpg',
         category: 'Accesorios',
         description: product.description || product.shortDescription || ''
       };
-      console.log('🔄 Producto adaptado:', adaptedProduct);
-      return adaptedProduct;
     });
-
-    console.log('✅ Productos adaptados:', adapted);
-
-    return adapted;
-  } catch (error) {
-    console.error('❌ Error fetching products:', error);
-    console.error('Error completo:', error);
+  } catch {
     return [];
   }
 }
 
-async function getCategories() {
+interface AdaptedCategory {
+  id: string;
+  name: string;
+  slug: string;
+  image: string;
+  path: string;
+}
+
+async function getCategories(): Promise<AdaptedCategory[]> {
   try {
     const collections = await getWooCollections();
 
@@ -105,25 +89,22 @@ async function getCategories() {
       return [];
     }
 
-    // Adaptar a formato simple - WooCommerce usa campos diferentes
-    // Filtrar categorías inválidas (undefined, vacías, uncategorized, 'All')
     return collections
-      .filter((collection: any) =>
+      .filter((collection) =>
         collection.handle &&
         collection.handle !== 'undefined' &&
         collection.handle !== '' &&
         collection.handle !== 'all' &&
         !collection.handle.toLowerCase().includes('uncategorized')
       )
-      .map((collection: any) => ({
-        id: collection.handle, // Usar handle como ID único
-        name: collection.title || collection.name,
+      .map((collection) => ({
+        id: collection.handle,
+        name: collection.title || collection.name || 'Sin nombre',
         slug: collection.handle,
-        image: collection.image?.url || collection.image?.sourceUrl || '/placeholder-category.jpg',
+        image: collection.image?.url || '/placeholder-category.jpg',
         path: collection.path || `/search/${collection.handle}`
       }));
-  } catch (error) {
-    console.error('Error fetching categories:', error);
+  } catch {
     return [];
   }
 }
@@ -163,7 +144,7 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((product: any) => (
+              {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>

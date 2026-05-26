@@ -37,7 +37,8 @@
       "Bash(cd \"d:/12.Freelance/Nuevo sitio web de cafe/salvame\" && rm -rf .git && echo \"Carpeta .git eliminada\")",
       "Bash(git remote *)",
       "Bash(ssh-keygen -t ed25519 -C \"cristito282828-source\" -f ~/.ssh/id_ed25519_cristito -N \"\")",
-      "Bash(ssh -T git@github.com-cristito)"
+      "Bash(ssh -T git@github.com-cristito)",
+      "Bash(npm install *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\basti\\.ssh",

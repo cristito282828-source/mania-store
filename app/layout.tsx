@@ -3,6 +3,7 @@ import './globals.css';
 import { RecentlyViewedProvider } from '@/components/providers/RecentlyViewedProvider';
 import { CartProvider } from '@/components/providers/CartProvider';
 import { CartDrawer } from '@/components/cart/CartDrawer';
+import { Chatbot } from '@/components/chatbot/Chatbot';
 
 export const metadata: Metadata = {
   title: {
@@ -39,6 +40,7 @@ export default function RootLayout({
             {children}
           </RecentlyViewedProvider>
           <CartDrawer />
+          <Chatbot />
         </CartProvider>
       </body>
     </html>

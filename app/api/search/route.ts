@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSearchResults } from '@/lib/woocommerce';
+import { getSearchProducts as getSearchResults } from '@/lib/woocommerce';
 
 // Función para limpiar y formatear precios CLP
 const formatCLP = (amount: string | number): string => {

@@ -5,14 +5,19 @@ import Link from 'next/link';
 import { ProductVariations } from './ProductVariations';
 import { Minus, Plus, Truck, RefreshCcw, Shield, Package } from 'lucide-react';
 import { useCart } from '@/components/providers/CartProvider';
-import type { WooProductAttribute, WooProductVariation } from '@/lib/woocommerce/types';
 
-type ProductAttribute = WooProductAttribute;
-
-type ProductVariation = WooProductVariation & {
+type VariationData = {
+  id: string;
   databaseId?: number;
-  attributes: {
-    nodes: WooProductAttribute[];
+  name?: string;
+  price?: string;
+  regularPrice?: string;
+  salePrice?: string;
+  stockStatus?: string;
+  stockQuantity?: number;
+  image?: { sourceUrl?: string; altText?: string };
+  attributes?: {
+    nodes: Array<{ name: string; value?: string; options?: string[] }>;
   };
 };
 
@@ -29,14 +34,13 @@ interface WooProduct {
   shortDescription?: string;
   description?: string;
   attributes?: {
-    nodes: ProductAttribute[];
+    nodes: Array<{ name: string; options?: string[]; value?: string }>;
   };
   image?: {
     sourceUrl?: string;
-    url?: string;
   };
   variations?: {
-    nodes: ProductVariation[];
+    nodes: VariationData[];
   };
 }
 
@@ -90,7 +94,7 @@ function AccordionItem({ title, icon, content, isOpen, onClick }: AccordionItemP
 
 export function ProductDescriptionWoo({ product }: ProductDescriptionWooProps) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
+  const [selectedVariation, setSelectedVariation] = useState<VariationData | null>(null);
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
@@ -167,7 +171,7 @@ export function ProductDescriptionWoo({ product }: ProductDescriptionWooProps) {
   };
 
   // Encontrar variación que coincida con la talla seleccionada
-  const findVariationBySize = (size: string): ProductVariation | null => {
+  const findVariationBySize = (size: string): VariationData | null => {
     if (!sizeAttribute?.options) return null;
 
     // Buscar por índice si options y variations coinciden en cantidad

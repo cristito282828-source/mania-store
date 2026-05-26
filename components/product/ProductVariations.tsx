@@ -1,33 +1,35 @@
 'use client';
 
 import { useState } from 'react';
-import type { WooProductAttribute, WooProductVariation } from '@/lib/woocommerce/types';
 
-type ProductVariation = WooProductVariation & {
-  databaseId?: number;
-  attributes: {
-    nodes: WooProductAttribute[];
+interface VariationData {
+  id: string;
+  name?: string;
+  price?: string;
+  attributes?: {
+    nodes: Array<{ name: string; value?: string }>;
   };
-};
-
-type ProductAttribute = WooProductAttribute;
+  [key: string]: unknown;
+}
 
 interface ProductVariationsProps {
-  variations: ProductVariation[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  variations: any[];
   defaultPrice: string;
-  onVariationChange: (variation: ProductVariation | null) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onVariationChange: (variation: any) => void;
 }
 
 export function ProductVariations({ variations, defaultPrice, onVariationChange }: ProductVariationsProps) {
   const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
-  const [currentVariation, setCurrentVariation] = useState<ProductVariation | null>(null);
+  const [currentVariation, setCurrentVariation] = useState<VariationData | null>(null);
 
   // Extraer atributos únicos (paño, color, talla, etc.)
   const getUniqueAttributes = () => {
     const attributeMap: Record<string, Set<string>> = {};
 
     variations.forEach((variation) => {
-      variation.attributes.nodes.forEach((attr) => {
+      variation.attributes?.nodes?.forEach((attr: { name: string; value?: string }) => {
         if (!attr.name || !attr.value) return;
 
         if (!attributeMap[attr.name]) {
@@ -54,9 +56,9 @@ export function ProductVariations({ variations, defaultPrice, onVariationChange 
     }
 
     return variations.find((variation) => {
-      const attrs = variation.attributes.nodes;
+      const attrs = variation.attributes?.nodes || [];
       const matches = attrs.every(
-        (attr) => attr.value && selectedAttributes[attr.name] === attr.value
+        (attr: { name: string; value?: string }) => attr.value && selectedAttributes[attr.name] === attr.value
       );
       return matches && attrs.length === Object.keys(selectedAttributes).length;
     });
@@ -74,10 +76,10 @@ export function ProductVariations({ variations, defaultPrice, onVariationChange 
 
     // Buscar variación que coincida
     const matchingVariation = variations.find((variation) => {
-      const attrs = variation.attributes.nodes;
+      const attrs = variation.attributes?.nodes || [];
       const matches = Object.entries(newSelection).every(
         ([name, selectedValue]) =>
-          attrs.some((attr) => attr.name === name && attr.value === selectedValue)
+          attrs.some((attr: { name: string; value?: string }) => attr.name === name && attr.value === selectedValue)
       );
       return matches && attrs.length === Object.keys(newSelection).length;
     });
@@ -107,13 +109,14 @@ export function ProductVariations({ variations, defaultPrice, onVariationChange 
 
     // Verificar si hay al menos una variación con este valor y las otras selecciones
     return variations.some((variation) => {
-      const hasThisValue = variation.attributes.nodes.some(
-        (attr) => attr.name === attributeName && attr.value === value
+      const attrs = variation.attributes?.nodes || [];
+      const hasThisValue = attrs.some(
+        (attr: { name: string; value?: string }) => attr.name === attributeName && attr.value === value
       );
 
       const matchesOtherSelections = otherSelections.every(([name, selectedValue]) =>
-        variation.attributes.nodes.some(
-          (attr) => attr.name === name && attr.value === selectedValue
+        attrs.some(
+          (attr: { name: string; value?: string }) => attr.name === name && attr.value === selectedValue
         )
       );
 

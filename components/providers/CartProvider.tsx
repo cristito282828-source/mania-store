@@ -131,6 +131,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  // Cart panel controls
+  const openCart = useCallback(() => setIsOpen(true), []);
+  const closeCart = useCallback(() => setIsOpen(false), []);
+
   // Initialise cart from storage
   useEffect(() => {
     const savedCart = loadCart();
@@ -207,14 +211,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       openCart();
       return true;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error adding to cart:', error);
       alert('Error al agregar al carrito');
       return false;
     } finally {
       setIsLoading(false);
     }
-  }, [openCart]);
+  }, []);
+
+  // Remove an item entirely
+  const removeItem = useCallback((key: string) => {
+    setCart(prevCart => {
+      if (!prevCart) return prevCart;
+      const updatedNodes = prevCart.contents.nodes.filter(item => item.key !== key);
+      if (updatedNodes.length === 0) return null;
+      const totals = calculateCartTotals(updatedNodes);
+      return { ...prevCart, contents: { nodes: updatedNodes }, ...totals };
+    });
+  }, []);
 
   // Update quantity of an existing item
   const updateQuantity = useCallback((key: string, quantity: number) => {
@@ -237,17 +252,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   }, [cart, removeItem]);
 
-  // Remove an item entirely
-  const removeItem = useCallback((key: string) => {
-    setCart(prevCart => {
-      if (!prevCart) return prevCart;
-      const updatedNodes = prevCart.contents.nodes.filter(item => item.key !== key);
-      if (updatedNodes.length === 0) return null;
-      const totals = calculateCartTotals(updatedNodes);
-      return { ...prevCart, contents: { nodes: updatedNodes }, ...totals };
-    });
-  }, []);
-
   const clearCart = useCallback(() => setCart(null), []);
 
   const refreshCart = useCallback(() => {
@@ -255,8 +259,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCart(savedCart);
   }, []);
 
-  const openCart = useCallback(() => setIsOpen(true), []);
-  const closeCart = useCallback(() => setIsOpen(false), []);
+  
 
   const itemCount = useMemo(() => {
     if (!cart) return 0;
