@@ -11,6 +11,7 @@ interface LocalCartItem {
   productName: string;
   productSlug: string;
   variationName?: string;
+  size?: string;
   price: number;
   priceDisplay: string;
   quantity: number;
