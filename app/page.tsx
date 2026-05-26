@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 /**
- * HOME PAGE - WooCommerce
+ * HOME PAGE - Mania Store
  */
 
 export const revalidate = 60;
@@ -15,9 +15,9 @@ import { CategoryCarousel } from '@/components/custom/CategoryCarousel';
 import { WooProduct, WooProductsOperation } from '@/lib/woocommerce/types';
 
 export const metadata = {
-  title: 'Store Desing - Tu Tienda Online de Deportes y Fitness',
-  description: 'Descubre los mejores productos deportivos, fitness y accesorios en Store Desing. Calidad premium y los mejores precios.',
-  keywords: 'deportes, fitness, accesorios deportivos, tienda online, Store Desing',
+  title: 'Mania Store - Tu Tienda Online de Perfumes y Fragancias',
+  description: 'Descubre las mejores fragancias y perfumes en Mania Store. Calidad premium y los mejores precios.',
+  keywords: 'perfumes, fragancias, perfumeria, tienda online, Mania Store',
 };
 
 interface AdaptedProduct {

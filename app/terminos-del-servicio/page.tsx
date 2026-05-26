@@ -2,8 +2,8 @@ import React from 'react';
 import FooterCustom from '@/components/custom/FooterCustom';
 
 export const metadata = {
-  title: 'Términos del Servicio | Store Desing',
-  description: 'Conoce nuestros términos del servicio y condiciones de uso de Store Desing Colombia.'
+  title: 'Términos del Servicio | Mania Store',
+  description: 'Conoce nuestros términos del servicio y condiciones de uso de Mania Store Colombia.'
 };
 
 export default function TerminosDelServicio() {
@@ -21,7 +21,7 @@ export default function TerminosDelServicio() {
 
         <div className="text-gray-600">
           <p className="mb-6">
-            Store Desing se dedica a la comercialización de productos deportivos y accesorios a través de nuestra tienda online.
+            Mania Store se dedica a la comercialización de perfumes y fragancias a través de nuestra tienda online.
           </p>
 
           <p className="mb-6">
@@ -78,8 +78,8 @@ export default function TerminosDelServicio() {
               CONTACTO
             </h2>
             <ul className="list-none mb-4 space-y-2">
-              <li><strong>WhatsApp:</strong> +57 319 687 2868</li>
-              <li><strong>Email:</strong> contacto@forzasportcali.com</li>
+              <li><strong>WhatsApp:</strong> +57 315 719 0372</li>
+              <li><strong>Email:</strong> contacto@maniastorecali.com</li>
             </ul>
           </section>
         </div>

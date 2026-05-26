@@ -2,8 +2,8 @@ import React from 'react';
 import FooterCustom from '@/components/custom/FooterCustom';
 
 export const metadata = {
-  title: 'Política de Protección de Datos | Store Desing',
-  description: 'Conoce cómo protegemos tus datos personales en Store Desing Colombia.'
+  title: 'Política de Protección de Datos | Mania Store',
+  description: 'Conoce cómo protegemos tus datos personales en Mania Store Colombia.'
 };
 
 export default function PoliticaProteccionDatos() {
@@ -21,7 +21,7 @@ export default function PoliticaProteccionDatos() {
 
         <div className="text-gray-600">
           <p className="mb-6">
-            Store Desing, en cumplimiento de la Ley 1581 de 2012 sobre Protección de Datos Personales en Colombia, ha establecido esta Política de Tratamiento de Datos Personales para informar a nuestros clientes y usuarios sobre el manejo de su información personal.
+            Mania Store, en cumplimiento de la Ley 1581 de 2012 sobre Protección de Datos Personales en Colombia, ha establecido esta Política
           </p>
 
           <section className="mb-8">
@@ -29,16 +29,16 @@ export default function PoliticaProteccionDatos() {
               RESPONSABLE DEL TRATAMIENTO
             </h2>
             <p className="mb-4">
-              <strong>Razón Social:</strong> Store Desing
+              <strong>Razón Social:</strong> Mania Store
             </p>
             <p className="mb-4">
               <strong>Domicilio:</strong> Colombia
             </p>
             <p className="mb-4">
-              <strong>Correo electrónico:</strong> contacto@forzasportcali.com
+              <strong>Correo electrónico:</strong> contacto@maniastorecali.com
             </p>
             <p className="mb-4">
-              <strong>WhatsApp:</strong> +57 319 687 2868
+              <strong>WhatsApp:</strong> +57 315 719 0372
             </p>
           </section>
 
@@ -47,7 +47,7 @@ export default function PoliticaProteccionDatos() {
               DATOS PERSONALES QUE RECOPILAMOS
             </h2>
             <p className="mb-4">
-              Store Desing puede recopilar los siguientes tipos de información personal:
+              Mania Store puede recopilar los siguientes tipos de información personal:
             </p>
             <ul className="list-disc pl-6 mb-4 space-y-2">
               <li><strong>Datos de identificación:</strong> Nombre completo, número de documento, fecha de nacimiento</li>
@@ -66,7 +66,7 @@ export default function PoliticaProteccionDatos() {
               Los datos personales recopilados serán utilizados para las siguientes finalidades:
             </p>
             <ul className="list-disc pl-6 mb-4 space-y-2">
-              <li>Procesar y gestionar pedidos de productos deportivos y accesorios</li>
+              <li>Procesar y gestionar pedidos de perfumes y fragancias</li>
               <li>Facilitar el proceso de pago y facturación</li>
               <li>Realizar envíos y entregas de productos a todo Colombia</li>
               <li>Brindar atención al cliente y soporte postventa</li>
@@ -104,8 +104,8 @@ export default function PoliticaProteccionDatos() {
               Para ejercer sus derechos sobre datos personales, puede contactarnos a través de:
             </p>
             <ul className="list-disc pl-6 mb-4 space-y-2">
-              <li>Correo electrónico: contacto@forzasportcali.com</li>
-              <li>WhatsApp: +57 319 687 2868</li>
+              <li>Correo electrónico: contacto@maniastorecali.com</li>
+              <li>WhatsApp: +57 315 719 0372</li>
             </ul>
             <p className="mb-4">
               Su solicitud será atendida en un plazo máximo de diez (10) días hábiles contados a partir de la fecha de recepción.
@@ -117,7 +117,7 @@ export default function PoliticaProteccionDatos() {
               SEGURIDAD DE LA INFORMACIÓN
             </h2>
             <p className="mb-4">
-              Store Desing implementa medidas técnicas, humanas y administrativas para proteger la información personal contra pérdida, robo, acceso no autorizado, divulgación, copia, uso o modificación.
+              Mania Store implementa medidas técnicas, humanas y administrativas
             </p>
           </section>
 
@@ -129,8 +129,8 @@ export default function PoliticaProteccionDatos() {
               Para cualquier consulta relacionada con el tratamiento de sus datos personales:
             </p>
             <ul className="list-none mb-4 space-y-2">
-              <li><strong>Email:</strong> contacto@forzasportcali.com</li>
-              <li><strong>WhatsApp:</strong> +57 319 687 2868</li>
+              <li><strong>Email:</strong> contacto@maniastorecali.com</li>
+              <li><strong>WhatsApp:</strong> +57 315 719 0372</li>
             </ul>
           </section>
         </div>

@@ -90,6 +90,12 @@ function CartItemCard({ item, onUpdateQuantity, onRemove }: {
               {item.productName}
             </Link>
 
+            {item.size && (
+              <p className="text-sm text-gray-500 mt-1">
+                Talla: {item.size}
+              </p>
+            )}
+
             {item.variationName && (
               <p className="text-sm text-gray-500 mt-1">
                 {item.variationName}
@@ -256,7 +262,7 @@ export default function CartPage() {
                 {cart.subtotal && (
                   <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
                     <p className="text-sm text-green-800">
-                      💚 Envío gratis en pedidos superiores a $80.000 CLP
+                      💚 Envío gratis en pedidos superiores a $80.000 COP
                     </p>
                   </div>
                 )}

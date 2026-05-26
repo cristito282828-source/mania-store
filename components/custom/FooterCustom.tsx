@@ -42,14 +42,14 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-4 mb-4">
               <div className="text-3xl font-bold tracking-wider">
-                <span className="text-white">Store Desing</span>
+                <span className="text-white">Mania Store</span>
               </div>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
               Tu tienda online de confianza. Deportes, fitness y accesorios deportivos con los mejores productos y precios.
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.instagram.com/forzasport_cali/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-200">
+              <a href="https://www.instagram.com/maniastorecali/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-200">
                 <Instagram className="h-5 w-5" />
               </a>
             </div>
@@ -104,8 +104,8 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                <a href="https://wa.me/573196872868" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-200">
-                  +57 319 687 2868
+                <a href="https://wa.me/573157190372" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors duration-200">
+                  +57 315 719 0372
                 </a>
               </div>
               <div className="flex items-center space-x-3">
@@ -124,7 +124,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
             <p className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} Store Desing. Todos los derechos reservados.
+              © {new Date().getFullYear()} Mania Store. Todos los derechos reservados.
             </p>
             <div className="flex space-x-6">
               <span className="text-gray-400 text-sm">

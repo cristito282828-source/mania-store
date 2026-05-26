@@ -2,8 +2,8 @@ import React from 'react';
 import FooterCustom from '@/components/custom/FooterCustom';
 
 export const metadata = {
-  title: 'Política de Reembolso | Store Desing',
-  description: 'Conoce nuestra política de reembolsos y devoluciones de Store Desing Colombia.'
+  title: 'Política de Reembolso | Mania Store',
+  description: 'Conoce nuestra política de reembolsos y devoluciones de Mania Store Colombia.'
 };
 
 export default function PoliticaReembolso() {
@@ -21,7 +21,7 @@ export default function PoliticaReembolso() {
 
         <div className="text-gray-600">
           <p className="mb-6">
-            En Store Desing nos esforzamos por garantizar tu satisfacción con cada compra. Esta política describe los términos y condiciones bajo los cuales puedes solicitar reembolsos y devoluciones.
+            En Mania Store nos esforzamos por garantizar tu satisfacción con cada compra. Esta política describe los términos y condiciones bajo los cuales puedes solicitar reembolsos y devoluciones.
           </p>
 
           <section className="mb-8">
@@ -60,7 +60,7 @@ export default function PoliticaReembolso() {
               Para iniciar un proceso de devolución, sigue estos pasos:
             </p>
             <ol className="list-decimal pl-6 mb-4 space-y-3">
-              <li>Contacta nuestro servicio al cliente a través de WhatsApp (+57 319 687 2868)</li>
+              <li>Contacta nuestro servicio al cliente a través de WhatsApp (+57 315 719 0372)</li>
               <li>Proporciona tu número de pedido y la razón de la devolución</li>
               <li>Envía fotos del estado del producto y empaque original para evaluación</li>
               <li>Nuestro equipo te enviará las instrucciones para el proceso de devolución</li>
@@ -95,7 +95,7 @@ export default function PoliticaReembolso() {
             </p>
             <ul className="list-disc pl-6 mb-4 space-y-2">
               <li>Contacta inmediatamente a nuestro servicio al cliente con fotos del producto y empaque</li>
-              <li>Store Desing cubrirá los costos de envío de la devolución</li>
+              <li>Mania Store cubrirá los costos de envío de la devolución</li>
               <li>Ofreceremos reemplazo del producto o reembolso completo, según tu preferencia</li>
             </ul>
           </section>
@@ -121,8 +121,8 @@ export default function PoliticaReembolso() {
               CONTACTO
             </h2>
             <ul className="list-none mb-4 space-y-2">
-              <li><strong>WhatsApp:</strong> +57 319 687 2868</li>
-              <li><strong>Email:</strong> contacto@forzasportcali.com</li>
+              <li><strong>WhatsApp:</strong> +57 315 719 0372</li>
+              <li><strong>Email:</strong> contacto@maniastorecali.com</li>
             </ul>
           </section>
         </div>

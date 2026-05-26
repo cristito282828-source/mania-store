@@ -2,7 +2,7 @@ import React from 'react';
 import FooterCustom from '@/components/custom/FooterCustom';
 
 export const metadata = {
-  title: 'Política de Envíos | Store Desing',
+  title: 'Política de Envíos | Mania Store',
   description: 'Conoce nuestra política de envíos, tiempos de entrega y cobertura en Colombia.'
 };
 
@@ -21,7 +21,7 @@ export default function PoliticaEnvios() {
 
         <div className="text-gray-600">
           <p className="mb-6">
-            En Store Desing nos comprometemos a entregar tus productos de manera segura y oportuna a todo Colombia. Esta política describe nuestros tiempos de procesamiento, costos de envío y cobertura.
+            En Mania Store nos comprometemos a entregar tus perfumes y fragancias de manera segura y oportuna a todo Colombia.
           </p>
 
           <section className="mb-8">
@@ -104,8 +104,8 @@ export default function PoliticaEnvios() {
               CONTACTO
             </h2>
             <ul className="list-none mb-4 space-y-2">
-              <li><strong>WhatsApp:</strong> +57 319 687 2868</li>
-              <li><strong>Email:</strong> contacto@forzasportcali.com</li>
+              <li><strong>WhatsApp:</strong> +57 315 719 0372</li>
+              <li><strong>Email:</strong> contacto@maniastorecali.com</li>
             </ul>
           </section>
         </div>

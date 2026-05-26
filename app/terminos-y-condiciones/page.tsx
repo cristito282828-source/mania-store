@@ -3,8 +3,8 @@ import Link from 'next/link';
 import FooterCustom from '@/components/custom/FooterCustom';
 
 export const metadata = {
-  title: 'Términos y Condiciones | Store Desing',
-  description: 'Lee los términos y condiciones de uso de la tienda online Store Desing Colombia.'
+  title: 'Términos y Condiciones | Mania Store',
+  description: 'Lee los términos y condiciones de uso de la tienda online Mania Store Colombia.'
 };
 
 export default function TerminosYCondiciones() {
@@ -22,7 +22,7 @@ export default function TerminosYCondiciones() {
 
         <div className="text-gray-600">
           <p className="mb-6">
-            Bienvenido a Store Desing. Al acceder y utilizar este sitio web y nuestros servicios, aceptas cumplir y estar sujeto a los siguientes términos y condiciones.
+            Bienvenido a Mania Store. Al acceder y utilizar este sitio web y nuestros servicios, aceptas cumplir y estar sujeto a los siguientes términos y condiciones.
           </p>
 
           <section className="mb-8">
@@ -116,8 +116,8 @@ export default function TerminosYCondiciones() {
               8. CONTACTO
             </h2>
             <ul className="list-none mb-4 space-y-2">
-              <li><strong>WhatsApp:</strong> +57 319 687 2868</li>
-              <li><strong>Email:</strong> contacto@forzasportcali.com</li>
+              <li><strong>WhatsApp:</strong> +57 315 719 0372</li>
+              <li><strong>Email:</strong> contacto@maniastorecali.com</li>
             </ul>
           </section>
         </div>

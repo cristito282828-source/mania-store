@@ -6,12 +6,12 @@ import { CartDrawer } from '@/components/cart/CartDrawer';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Store Desing - Tienda Online',
-    template: '%s | Store Desing'
+    default: 'Mania Store - Tienda Online',
+    template: '%s | Mania Store'
   },
-  description: 'Descubre los mejores productos deportivos, fitness y accesorios en Store Desing. Calidad premium y los mejores precios.',
-  keywords: ['deportes', 'fitness', 'accesorios deportivos', 'tienda online', 'Store Desing'],
-  authors: [{ name: 'Store Desing' }],
+  description: 'Descubre los mejores perfumes y fragancias en Mania Store. Calidad premium y los mejores precios.',
+  keywords: ['perfumes', 'fragancias', 'perfumeria', 'tienda online', 'Mania Store'],
+  authors: [{ name: 'Mania Store' }],
   icons: {
     icon: '/logo%20mania.png',
     apple: '/logo%20mania.png',
@@ -19,10 +19,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'es_ES',
-    url: 'https://forzasport.com',
-    siteName: 'Store Desing',
-    title: 'Store Desing - Tienda Online de Productos Deportivos y Fitness',
-    description: 'Descubre los mejores productos deportivos y fitness en Store Desing.',
+    url: 'https://maniastorecali.com',
+    siteName: 'Mania Store',
+    title: 'Mania Store - Tienda Online de Fragancias y Perfumes',
+    description: 'Descubre los mejores perfumes y fragancias en Mania Store.',
   },
 };
 
