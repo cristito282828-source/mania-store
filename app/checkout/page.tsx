@@ -53,7 +53,7 @@ export default function CheckoutPage() {
     const phoneNumber = '573157190372';
 
     // Construir mensaje para WhatsApp
-    let message = `*NUEVO PEDIDO - Store Desing*\n\n`;
+    let message = `*NUEVO PEDIDO - Mania Store*\n\n`;
     message += `*DATOS DEL CLIENTE*\n`;
     message += `Nombre: ${formData.nombre}\n`;
     message += `Email: ${formData.email}\n`;
@@ -72,7 +72,11 @@ export default function CheckoutPage() {
         const productName = item.productName || item.title || 'Producto';
         const quantity = item.quantity || 1;
         const price = item.priceDisplay || item.price || '$0';
-        message += `${quantity}x ${productName} - ${price}\n`;
+        let line = `${quantity}x ${productName} - ${price}`;
+        if (item.size) {
+          line += ` (Talla: ${item.size})`;
+        }
+        message += `${line}\n`;
       });
     }
 

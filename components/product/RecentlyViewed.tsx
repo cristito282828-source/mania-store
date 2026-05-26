@@ -4,6 +4,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRecentlyViewed } from '@/components/providers/RecentlyViewedProvider';
 
+// Función para limpiar HTML entities de precios
+const cleanPrice = (price: string | undefined) => {
+  if (!price) return '';
+  return String(price)
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&#160;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
 interface RecentlyViewedProductsProps {
   currentProductId?: string;
   title?: string;
@@ -37,7 +49,7 @@ export function RecentlyViewedProducts({
     <section className="border-t border-gray-200 mt-16 pt-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="font-belleza text-2xl font-light tracking-wide text-white">
+          <h2 className="font-belleza text-2xl font-light tracking-wide text-gray-900">
             {title}
           </h2>
           {productsToShow.length >= maxProducts && (
@@ -81,7 +93,7 @@ export function RecentlyViewedProducts({
                 </h3>
                 {product.price && (
                   <p className="text-lg text-gray-700 font-medium">
-                    {product.price}
+                    {cleanPrice(product.price)}
                   </p>
                 )}
               </div>
@@ -137,7 +149,7 @@ export function RecentlyViewedCompact({ maxProducts = 3 }: { maxProducts?: numbe
               </p>
               {product.price && (
                 <p className="text-xs text-gray-600 mt-0.5">
-                  {product.price}
+                  {cleanPrice(product.price)}
                 </p>
               )}
             </div>

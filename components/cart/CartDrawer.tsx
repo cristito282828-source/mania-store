@@ -107,9 +107,9 @@ export function CartDrawer() {
                       {item.productName}
                     </Link>
 
-                    {item.variationName && (
+                    {item.size && (
                       <p className="text-xs text-gray-500 mt-1">
-                        {item.variationName}
+                        Talla: {item.size}
                       </p>
                     )}
 

@@ -3,14 +3,16 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import { getProduct } from '@/lib/woocommerce';
 
+// Interface for items stored in the local cart
 interface LocalCartItem {
   key: string;
   productId: string;
   productName: string;
   productSlug: string;
   variationName?: string;
-  price: number;
-  priceDisplay: string;
+  size?: string;
+  price: number; // numeric price per unit (CLP)
+  priceDisplay: string; // formatted price for display
   quantity: number;
   image?: {
     sourceUrl?: string;
@@ -47,47 +49,45 @@ const CART_STORAGE_KEY = 'pinneacle_cart';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Función para formatear precios en CLP
+// Helper to format a number as Chilean peso currency
 const formatCLP = (num: number) => {
   const rounded = Math.round(num);
-  return '$' + rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return '$' + rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
-// Función para extraer número de precio (maneja ambos formatos)
+// Helper to parse price strings that may contain "$", "&nbsp;" or other characters
 const parsePrice = (priceStr: string): number => {
   if (!priceStr) return 0;
   let cleaned = priceStr.replace(/[^0-9.,]/g, '') || '0';
-
   const hasComma = cleaned.includes(',');
   const hasDot = cleaned.includes('.');
 
   if (hasComma && hasDot) {
     const parts = cleaned.split('.');
-    if (parts.length === 2 && parts[1] && parts[1].length <= 2) {
+    if (parts.length === 2 && parts[1].length <= 2) {
       cleaned = cleaned.replace(/,/g, '').replace(/\.\d+$/, '');
     } else {
       cleaned = cleaned.replace(/,/g, '').replace(/\./g, '');
     }
   } else if (hasDot) {
     const parts = cleaned.split('.');
-    if (parts.length > 1 && parts.some(p => p && p.length === 3)) {
+    if (parts.length > 1 && parts.some(p => p.length === 3)) {
       cleaned = cleaned.replace(/\./g, '');
     } else {
       cleaned = Math.round(parseFloat(cleaned)).toString();
     }
   } else if (hasComma) {
     const parts = cleaned.split(',');
-    if (parts.length === 2 && parts[1] && parts[1].length <= 2) {
+    if (parts.length === 2 && parts[1].length <= 2) {
       cleaned = parts[0] || '0';
     } else {
       cleaned = cleaned.replace(/,/g, '');
     }
   }
-
   return parseFloat(cleaned || '0');
 };
 
-// Guardar carrito en localStorage
+// Persist cart to localStorage
 const saveCart = (cart: LocalCart | null) => {
   if (typeof window !== 'undefined') {
     if (cart) {
@@ -98,7 +98,7 @@ const saveCart = (cart: LocalCart | null) => {
   }
 };
 
-// Cargar carrito desde localStorage
+// Load cart from localStorage
 const loadCart = (): LocalCart | null => {
   if (typeof window !== 'undefined') {
     const saved = localStorage.getItem(CART_STORAGE_KEY);
@@ -113,19 +113,15 @@ const loadCart = (): LocalCart | null => {
   return null;
 };
 
-// Calcular totales del carrito
+// Compute totals based on numeric price values
 const calculateCartTotals = (items: LocalCartItem[]) => {
-  // Usar precio numérico guardado en lugar de parsear de priceDisplay
-  const subtotal = items.reduce((sum, item) => {
-    return sum + (item.price * item.quantity);
-  }, 0);
-
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   return {
     subtotal: formatCLP(subtotal),
     total: formatCLP(subtotal),
     shippingTotal: '$0',
     discountTotal: '$0',
-    feeTotal: '$0'
+    feeTotal: '$0',
   };
 };
 
@@ -134,94 +130,77 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Cargar carrito desde localStorage al montar
+  // Initialise cart from storage
   useEffect(() => {
     const savedCart = loadCart();
-    if (savedCart) {
-      setCart(savedCart);
-    }
+    if (savedCart) setCart(savedCart);
   }, []);
 
-  // Guardar carrito en localStorage cuando cambia
+  // Persist cart on changes
   useEffect(() => {
     saveCart(cart);
   }, [cart]);
 
-  const addToCart = useCallback(async (
-    productId: string,
-    quantity: number = 1,
-    productData?: any
-  ): Promise<boolean> => {
+  // Add a product (or variant) to the cart
+  const addToCart = useCallback(async (productId: string, quantity: number = 1, productData?: any): Promise<boolean> => {
     try {
       setIsLoading(true);
 
-      // Usar datos proporcionados o obtener de la API
+      // Resolve product data either from argument or API
       let product = productData;
       if (!product) {
         product = await getProduct(productId);
       }
-
       if (!product) {
         alert('Producto no encontrado');
         return false;
       }
 
-      // Extraer precio numérico
+      // Determine numeric price
       const rawPrice = String(product.priceRange?.minVariantPrice?.amount || product.priceRange?.maxVariantPrice?.amount || '0');
-      console.log('RAW PRICE:', rawPrice, '-> parsed:', parsePrice(rawPrice));
       const priceNum = parsePrice(rawPrice);
 
       setCart(prevCart => {
-        // Buscar si el producto ya está en el carrito (usar productId o productSlug)
-        const existingItem = prevCart?.contents.nodes.find(
-          item => item.productId === productId || item.productSlug === product.handle
-        );
-
+        const baseCart: any = prevCart ?? {
+          contents: { nodes: [] },
+          subtotal: '$0',
+          total: '$0',
+          shippingTotal: '$0',
+          discountTotal: '$0',
+          feeTotal: '$0',
+        };
+        const existingItem = baseCart.contents.nodes.find((item: any) => item.productId === productId || item.productSlug === product.handle);
         if (existingItem) {
-          // Actualizar cantidad
-          const updatedNodes = prevCart!.contents.nodes.map(item => {
+          // Increase quantity
+          const updatedNodes = baseCart.contents.nodes.map((item: any) => {
             if (item.productId === productId || item.productSlug === product.handle) {
               const newQuantity = item.quantity + quantity;
               const newTotal = item.price * newQuantity;
-              return {
-                ...item,
-                quantity: newQuantity,
-                priceDisplay: formatCLP(newTotal)
-              };
+              return { ...item, quantity: newQuantity, priceDisplay: formatCLP(newTotal) };
             }
             return item;
           });
-
           const totals = calculateCartTotals(updatedNodes);
-          return {
-            ...prevCart!,
-            contents: { nodes: updatedNodes },
-            ...totals
-          };
+          return { ...baseCart, contents: { nodes: updatedNodes }, ...totals };
         } else {
-          // Agregar nuevo item
-          const priceNum = parsePrice(String(product.priceRange?.minVariantPrice?.amount || product.priceRange?.maxVariantPrice?.amount || '0'));
+          // Create new cart item
           const newItem: LocalCartItem = {
             key: `${productId}-${Date.now()}`,
-            productId: productId,
-            productName: product.title,
+            productId,
+            productName: productData?.title || product.title,
             productSlug: product.handle,
+            variationName: productData?.variationName,
+            size: productData?.size,
             price: priceNum,
             priceDisplay: formatCLP(priceNum * quantity),
             quantity,
-            image: product.featuredImage ? {
-              sourceUrl: product.featuredImage.url,
-              altText: product.featuredImage.altText
-            } : undefined
+            image: product.featuredImage
+              ? { sourceUrl: product.featuredImage.url, altText: product.featuredImage.altText || product.name }
+              : undefined,
           };
-
-          const updatedNodes = [...(prevCart?.contents.nodes || []), newItem];
+          const updatedNodes = [...baseCart.contents.nodes, newItem];
           const totals = calculateCartTotals(updatedNodes);
-
-          return {
-            contents: { nodes: updatedNodes },
-            ...totals
-          };
+          return { ...baseCart, contents: { nodes: updatedNodes }, ...totals };
         }
       });
 
@@ -236,67 +215,41 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  // Update quantity of an existing item
   const updateQuantity = useCallback((key: string, quantity: number) => {
     if (!cart) return;
-
     if (quantity < 1) {
       removeItem(key);
       return;
     }
-
     setCart(prevCart => {
       if (!prevCart) return prevCart;
-
       const updatedNodes = prevCart.contents.nodes.map(item => {
         if (item.key === key) {
-          const pricePerUnit = item.price;
-          const newSubtotal = pricePerUnit * quantity;
-
-          return {
-            ...item,
-            quantity: quantity,
-            priceDisplay: formatCLP(newSubtotal)
-          };
+          const newSubtotal = item.price * quantity;
+          return { ...item, quantity, priceDisplay: formatCLP(newSubtotal) };
         }
         return item;
       });
-
       const totals = calculateCartTotals(updatedNodes);
-
-      return {
-        ...prevCart,
-        contents: { nodes: updatedNodes },
-        ...totals
-      };
+      return { ...prevCart, contents: { nodes: updatedNodes }, ...totals };
     });
   }, [cart]);
 
+  // Remove an item entirely
   const removeItem = useCallback((key: string) => {
     setCart(prevCart => {
       if (!prevCart) return prevCart;
-
       const updatedNodes = prevCart.contents.nodes.filter(item => item.key !== key);
-
-      if (updatedNodes.length === 0) {
-        return null;
-      }
-
+      if (updatedNodes.length === 0) return null;
       const totals = calculateCartTotals(updatedNodes);
-
-      return {
-        ...prevCart,
-        contents: { nodes: updatedNodes },
-        ...totals
-      };
+      return { ...prevCart, contents: { nodes: updatedNodes }, ...totals };
     });
   }, []);
 
-  const clearCart = useCallback(() => {
-    setCart(null);
-  }, []);
+  const clearCart = useCallback(() => setCart(null), []);
 
   const refreshCart = useCallback(() => {
-    // Recargar desde localStorage
     const savedCart = loadCart();
     setCart(savedCart);
   }, []);
@@ -320,7 +273,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     updateQuantity,
     removeItem,
     clearCart,
-    refreshCart
+    refreshCart,
   };
 
   return (

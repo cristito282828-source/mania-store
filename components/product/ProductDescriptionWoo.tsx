@@ -104,9 +104,40 @@ export function ProductDescriptionWoo({ product }: ProductDescriptionWooProps) {
   const variations = isVariable ? product.variations?.nodes || [] : [];
 
   // Atributo de tallas (ej: pa_tallas-men)
-  const sizeAttribute = product.attributes?.nodes?.find(
+  let sizeAttribute = product.attributes?.nodes?.find(
     (attr) => attr.name?.toLowerCase().includes('talla') || attr.name?.startsWith('pa_')
   );
+
+  // Fallback si no hay atributos definidos en la base de datos pero el producto tiene variaciones
+  if (!sizeAttribute && variations.length > 0) {
+    const getFallbackOptions = (count: number) => {
+      if (count === 4) {
+        return [
+          "5.5 US / 36 EUR / 35 COL",
+          "6.5 US / 37 EUR / 36 COL",
+          "7.0 US / 38 EUR / 37 COL",
+          "8.0 US / 39 EUR / 38 COL"
+        ];
+      }
+      if (count === 6) {
+        return [
+          "7.0 US / 40 EUR / 38 COL",
+          "8.0 US / 41 EUR / 39 COL",
+          "8.5 US / 42 EUR / 40 COL",
+          "9.0 US / 43 EUR / 41 COL",
+          "9.5 US / 44 EUR / 42 COL",
+          "10.0 US / 45 EUR / 43 COL"
+        ];
+      }
+      // Genérico en caso de que varíe el número
+      return Array.from({ length: count }, (_, i) => `Talla ${i + 1}`);
+    };
+
+    sizeAttribute = {
+      name: "Talla",
+      options: getFallbackOptions(variations.length)
+    } as any;
+  }
 
   // Función para limpiar HTML entities de precios
   const cleanPrice = (price: string | undefined) => {
@@ -205,6 +236,7 @@ export function ProductDescriptionWoo({ product }: ProductDescriptionWooProps) {
     // Usar precio de variación si está seleccionada, sino el precio del producto
     const productPrice = selectedVariation?.price || product.price;
     const productData = {
+      size: selectedSize,
       title: selectedVariation?.name || product.name,
       handle: product.slug,
       priceRange: {
