@@ -7,19 +7,19 @@ import Link from 'next/link';
 const banners = [
   {
     id: 1,
-    src: '/banner-forza-cali.png',
+    src: '/banner-forza-final.png',
     alt: 'Banner Forza Cali - Store Desing',
     link: '/search'
   },
   {
     id: 2,
-    src: '/banner-forza-cali.png',
+    src: '/banner-forza-final.png',
     alt: 'Banner Forza Cali - Store Desing',
     link: '/search'
   },
   {
     id: 3,
-    src: '/banner-forza-cali.png',
+    src: '/banner-forza-final.png',
     alt: 'Banner Forza Cali - Store Desing',
     link: '/search'
   }

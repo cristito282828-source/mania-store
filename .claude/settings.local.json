@@ -41,7 +41,14 @@
       "Bash(npm install *)",
       "Bash(jobs -l)",
       "Bash(rm -rf components/chatbot app/api/chatbot lib/minimax.ts)",
-      "Bash(npm uninstall *)"
+      "Bash(npm uninstall *)",
+      "Bash(ls -la \"C:/Users/User/\" | grep -i trick)",
+      "Read(//c/Users/User/**)",
+      "Bash(cd /c/Users/User/TheTrickest && ls -la src/app/api/upload/)",
+      "Read(//c/c/Users/User/TheTrickest/src/app/api/**)",
+      "WebSearch",
+      "WebFetch(domain:minimax-algeng-chat-tts-us.oss-us-east-1.aliyuncs.com)",
+      "Bash(node -e ' *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\basti\\.ssh",
