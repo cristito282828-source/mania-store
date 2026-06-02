@@ -1,51 +1,95 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function N8nChatWidget() {
-  const [visible, setVisible] = useState(false);
+  // URL del webhook de n8n (Chat Trigger node → Production URL)
+  const chatUrl =
+    process.env.NEXT_PUBLIC_N8N_CHAT_URL ||
+    "https://n8n.neuralflow.space/webhook/aee75768-0aa3-4341-9294-870752820cbb/chat";
 
-  const toggleChat = () => {
-    setVisible((v) => !v);
-  };
+  const [visible, setVisible] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
+  useEffect(() => {
+    // Cerrar el chat con tecla Escape
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && visible) {
+        setVisible(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [visible]);
+
+  const toggleChat = () => setVisible((v) => !v);
+  const closeChat = () => setVisible(false);
 
   return (
     <>
-      {/* Botón flotante - Lado izquierdo */}
+      {/* Botón flotante - Esquina inferior derecha */}
       <button
         onClick={toggleChat}
-        className="fixed bottom-6 left-6 z-[9999] flex items-center gap-2 bg-[#2d7a3e] hover:bg-[#1e5a2a] text-white border-none rounded-full px-5 py-3 shadow-lg transition-all duration-300 hover:scale-105"
-        aria-label={visible ? "Cerrar chat" : "Abrir chat de asistencia"}
+        aria-label={visible ? "Cerrar chat de asistencia" : "Abrir chat de asistencia"}
+        aria-expanded={visible}
+        className="fixed bottom-5 right-5 z-[9999] flex items-center gap-2 bg-black text-[#34efc2] hover:bg-neutral-900 hover:scale-105 rounded-full px-5 py-3 shadow-lg transition-all duration-300 border-2 border-[#34efc2] font-bold"
       >
-        {visible ? (
-          <>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <span className="text-sm font-medium">Cerrar</span>
-          </>
-        ) : (
-          <>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <span className="text-sm font-medium">Asistente</span>
-          </>
-        )}
+        <span className="text-2xl" aria-hidden="true">
+          {visible ? "✕" : "💬"}
+        </span>
+        <span className="text-sm uppercase tracking-wider">
+          {visible ? "Cerrar" : "Asistente"}
+        </span>
       </button>
 
-      {/* Iframe del chatbot - Lado izquierdo */}
+      {/* Iframe del chatbot */}
       {visible && (
-        <div className="fixed bottom-24 left-6 z-[9998] animate-in slide-in-from-bottom-4 duration-300">
-          <iframe
-            src="https://n8n.neuralflow.space/webhook/3b4b4795-e0ee-4755-9d16-3db27739e5f1/chat"
-            title="Chat de asistencia Juan Becerra"
-            className="w-[380px] h-[600px] border-0 rounded-2xl shadow-2xl"
-            style={{
-              maxHeight: 'calc(100vh - 140px)',
-            }}
+        <>
+          {/* Overlay clickeable para cerrar (mobile-friendly) */}
+          <div
+            onClick={closeChat}
+            className="fixed inset-0 z-[9997] bg-black/30 backdrop-blur-sm md:hidden"
+            aria-hidden="true"
           />
-        </div>
+
+          <div
+            role="dialog"
+            aria-label="Chat de asistencia ManiaBot"
+            className="fixed bottom-20 right-5 z-[9998] animate-in slide-in-from-bottom-4 duration-300"
+          >
+            {/* Header con botón cerrar (visible en desktop) */}
+            <div className="hidden md:flex justify-end mb-2">
+              <button
+                onClick={closeChat}
+                aria-label="Cerrar chat"
+                className="bg-black/80 text-[#34efc2] hover:bg-neutral-900 rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold border-2 border-[#34efc2] transition-all hover:scale-110"
+              >
+                ✕
+              </button>
+            </div>
+
+            <iframe
+              src={chatUrl}
+              onLoad={() => setIframeLoaded(true)}
+              onError={() => console.error("Error al cargar el iframe del chatbot")}
+              title="Chat de asistencia ManiaBot"
+              className="w-[350px] h-[500px] max-w-[calc(100vw-2.5rem)] max-h-[calc(100vh-7rem)] border-0 rounded-2xl shadow-2xl bg-black"
+              style={{
+                display: iframeLoaded ? "block" : "none",
+              }}
+            />
+
+            {/* Loading state mientras carga el iframe */}
+            {!iframeLoaded && (
+              <div className="w-[350px] h-[500px] max-w-[calc(100vw-2.5rem)] border-2 border-[#34efc2] rounded-2xl bg-black flex flex-col items-center justify-center text-[#34efc2]">
+                <div className="w-12 h-12 border-4 border-[#34efc2] border-t-transparent rounded-full animate-spin mb-4" />
+                <p className="text-sm font-bold uppercase tracking-wider">
+                  Conectando con ManiaBot...
+                </p>
+              </div>
+            )}
+          </div>
+        </>
       )}
     </>
   );

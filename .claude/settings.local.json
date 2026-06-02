@@ -48,7 +48,9 @@
       "Read(//c/c/Users/User/TheTrickest/src/app/api/**)",
       "WebSearch",
       "WebFetch(domain:minimax-algeng-chat-tts-us.oss-us-east-1.aliyuncs.com)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(cd /c/Users/User/pinneacle && rm -rf lib/shopify/)",
+      "mcp__context-mode__ctx_stats"
     ],
     "additionalDirectories": [
       "C:\\Users\\basti\\.ssh",
